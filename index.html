@@ -1,206 +1,130 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<title>OmerF1 Panel - Gelişmiş SMM Sipariş</title>
-<style>
-  body {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
-    color: #fff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 20px;
-  }
-  h1, h2 {
-    text-align: center;
-    text-shadow: 0 0 5px #004466;
-  }
-  .price-list {
-    max-width: 700px;
-    margin: 0 auto 30px;
-    border-collapse: collapse;
-    width: 100%;
-    background: rgba(0,0,0,0.3);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .price-list th, .price-list td {
-    border: 1px solid #00eaff;
-    padding: 12px;
-    text-align: center;
-  }
-  .price-list th {
-    background-color: #004466;
-  }
-  form {
-    max-width: 450px;
-    margin: 0 auto;
-    background: rgba(255,255,255,0.15);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00eaff;
-  }
-  select, input {
-    width: 100%;
-    border-radius: 8px;
-    border: none;
-    padding: 12px;
-    font-size: 1em;
-    box-shadow: 0 0 5px rgba(0,123,255,0.5);
-    transition: box-shadow 0.3s ease;
-    color: #003366;
-    margin-bottom: 18px;
-  }
-  select:focus, input:focus {
-    outline: none;
-    box-shadow: 0 0 12px #00eaff;
-  }
-  button {
-    background: linear-gradient(45deg, #00eaff, #005f99);
-    border: none;
-    padding: 15px;
-    font-weight: bold;
-    border-radius: 12px;
-    cursor: pointer;
-    color: #fff;
-    font-size: 1.1em;
-    transition: background 0.3s ease;
-  }
-  button:hover {
-    background: linear-gradient(45deg, #0072ff, #00c6ff);
-    box-shadow: 0 0 18px #00eaff;
-  }
-  #ordersList {
-    max-width: 700px;
-    margin: 35px auto 0;
-    background: rgba(255,255,255,0.15);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 0 15px #00eaff;
-  }
-  .order-item {
-    border-bottom: 1px solid #00eaff;
-    padding: 12px 0;
-    color: #003366;
-    font-weight: 600;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmerF1</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+    }
+
+    .three-dots {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      cursor: pointer;
+      font-size: 26px;
+      color: white;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #333;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 18px;
+      display: block;
+      color: white;
+    }
+
+    .sidebar a.header {
+      background-color: navy;
+      color: white;
+      font-weight: bold;
+    }
+
+    .sidebar a.category {
+      background-color: black;
+      color: white;
+      font-weight: bold;
+    }
+
+    .content {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .placeholder {
+      background-color: #ccc;
+      margin: 10px auto;
+      width: 80%;
+      height: 150px;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<h1>OmerF1 Panel</h1>
+  <div class="three-dots" onclick="toggleSidebar()">☰</div>
 
-<h2>Fiyat Listesi</h2>
-<table class="price-list">
-  <thead>
-    <tr>
-      <th>Hizmet</th>
-      <th>Fiyat (TL)</th>
-      <th>Açıklama</th>
-    </tr>
-  </thead>
-  <tbody id="priceTableBody">
-    <!-- Buraya JS ile otomatik gelecek -->
-  </tbody>
-</table>
+  <header>OmerF1</header>
 
-<h2>Sipariş Formu</h2>
-<form id="orderForm">
-  <label for="service">Hizmet Seç:</label>
-  <select id="service" required>
-    <option value="">Seçiniz</option>
-  </select>
+  <div class="sidebar" id="sidebar">
+    <a href="#" class="header">Panel</a>
+    <a href="#">1. Ad Soyad</a>
+    <a href="#">2. TC &gt; GSM</a>
+    <a href="#">3. GSM &gt; TC</a>
+    <a href="#">4. Aile</a>
+    <a href="#">5. Sülale</a>
+    <a href="#">6. Adres</a>
+    <a href="#">7. IBAN</a>
+    <a href="#">8. Anne</a>
+    <a href="#">9. Baba</a>
+    <a href="#">10. İş Yeri</a>
+    <a href="#">11. Tapu</a>
+    <a href="#">12. Plaka</a>
+    <a href="#">13. Full Sorgu</a>
+    <a href="#">14. Çocuk</a>
 
-  <label for="quantity">Miktar (adet):</label>
-  <input type="number" id="quantity" min="1" required placeholder="Adet giriniz" />
+    <a class="category">SMM Panel</a>
+    <a href="instagram.html">1. Instagram İşlemleri</a>
+    <a href="#">2. TikTok İşlemleri</a>
+    <a href="#">3. YouTube İşlemleri</a>
 
-  <label for="account">Hesap Kullanıcı Adı:</label>
-  <input type="text" id="account" placeholder="Instagram kullanıcı adı" required />
+    <a class="category">Cihaz Paneli</a>
+    <a href="#">1. Kamera Sızma</a>
+    <a href="#">2. Canlı Konum</a>
+    <a href="#">3. SMS Bomber</a>
+  </div>
 
-  <button type="submit">Siparişi Gönder</button>
-</form>
+  <div class="content">
+    <div class="placeholder"></div>
+    <div class="placeholder"></div>
+    <div class="placeholder"></div>
+  </div>
 
-<div id="ordersList" style="display:none;">
-  <h2>Gelen Siparişler</h2>
-  <div id="ordersContainer"></div>
-</div>
-
-<script>
-  // Hizmetler ve fiyatlar
-  const services = [
-    { name: "Instagram Takipçi", price: 100, desc: "1000 takipçi paketi" },
-    { name: "Instagram Beğeni", price: 50, desc: "500 beğeni paketi" },
-    { name: "Instagram Yorum", price: 70, desc: "200 yorum paketi" },
-    { name: "TikTok Takipçi", price: 120, desc: "1000 TikTok takipçi" },
-    { name: "YouTube Abone", price: 150, desc: "500 YouTube abonesi" },
-    { name: "Twitter Takipçi", price: 90, desc: "500 Twitter takipçi" },
-    { name: "Facebook Beğeni", price: 40, desc: "300 Facebook beğeni" },
-    { name: "Spotify Takipçi", price: 80, desc: "Spotify takipçi paketi" },
-    // İstersen buraya yüzlerce daha ekleyebilirsin!
-  ];
-
-  // Tablo ve select elementlerini seç
-  const priceTableBody = document.getElementById('priceTableBody');
-  const serviceSelect = document.getElementById('service');
-
-  // Tabloyu doldur
-  services.forEach(s => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.name}</td><td>${s.price}</td><td>${s.desc}</td>`;
-    priceTableBody.appendChild(tr);
-
-    // Select eklentisi
-    const option = document.createElement('option');
-    option.value = s.name;
-    option.textContent = s.name;
-    serviceSelect.appendChild(option);
-  });
-
-  const orderForm = document.getElementById('orderForm');
-  const ordersList = document.getElementById('ordersList');
-  const ordersContainer = document.getElementById('ordersContainer');
-
-  // Siparişleri gösterme fonksiyonu
-  function showOrders() {
-    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    if (orders.length === 0) {
-      ordersList.style.display = 'none';
-      return;
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      if (sidebar.style.width === "250px") {
+        sidebar.style.width = "0";
+      } else {
+        sidebar.style.width = "250px";
+      }
     }
-    ordersList.style.display = 'block';
-    ordersContainer.innerHTML = '';
-    orders.forEach((order, i) => {
-      const div = document.createElement('div');
-      div.classList.add('order-item');
-      div.textContent = `#${i + 1} - Hizmet: ${order.service} | Miktar: ${order.quantity} | Hesap: ${order.account}`;
-      ordersContainer.appendChild(div);
-    });
-  }
-
-  // Form gönderim işlemi
-  orderForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const service = serviceSelect.value;
-    const quantity = document.getElementById('quantity').value;
-    const account = document.getElementById('account').value.trim();
-
-    if (!service || quantity <= 0 || !account) {
-      alert('Lütfen tüm alanları doğru doldurun!');
-      return;
-    }
-
-    // Siparişi kaydet
-    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push({ service, quantity, account });
-    localStorage.setItem('orders', JSON.stringify(orders));
-
-    alert('Siparişiniz alındı!');
-    orderForm.reset();
-    showOrders();
-  });
-
-  // Sayfa yüklenince siparişleri göster
-  showOrders();
-</script>
+  </script>
 
 </body>
 </html>
