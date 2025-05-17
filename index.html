@@ -7,16 +7,18 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: black;
+      color: #00ff00;
     }
 
     header {
-      background-color: #222;
-      color: white;
+      background-color: black;
+      color: #00ff00;
       padding: 20px;
       text-align: center;
-      font-size: 28px;
+      font-size: 32px;
+      text-shadow: 0 0 5px #00ff00;
     }
 
     .three-dots {
@@ -25,7 +27,8 @@
       left: 20px;
       cursor: pointer;
       font-size: 26px;
-      color: white;
+      color: #00ff00;
+      text-shadow: 0 0 5px #00ff00;
     }
 
     .sidebar {
@@ -34,30 +37,37 @@
       position: fixed;
       top: 0;
       left: 0;
-      background-color: #333;
+      background-color: #111;
       overflow-x: hidden;
       transition: 0.3s;
       padding-top: 60px;
       z-index: 1000;
+      box-shadow: 0 0 10px #00ff00;
     }
 
     .sidebar a {
       padding: 10px 20px;
       text-decoration: none;
-      font-size: 18px;
+      font-size: 17px;
       display: block;
-      color: white;
+      color: #00ff00;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background-color: #00ff00;
+      color: black;
     }
 
     .sidebar a.header {
       background-color: navy;
       color: white;
       font-weight: bold;
+      text-shadow: none;
     }
 
     .sidebar a.category {
       background-color: black;
-      color: white;
       font-weight: bold;
     }
 
@@ -67,11 +77,12 @@
     }
 
     .placeholder {
-      background-color: #ccc;
+      background-color: #111;
       margin: 10px auto;
       width: 80%;
       height: 150px;
       border-radius: 10px;
+      box-shadow: 0 0 10px #00ff00;
     }
   </style>
 </head>
@@ -100,8 +111,8 @@
 
     <a class="category">SMM Panel</a>
     <a href="instagram.html">1. Instagram İşlemleri</a>
-    <a href="#">2. TikTok İşlemleri</a>
-    <a href="#">3. YouTube İşlemleri</a>
+    <a href="tiktok.html">2. TikTok İşlemleri</a>
+    <a href="youtube.html">3. YouTube İşlemleri</a>
 
     <a class="category">Cihaz Paneli</a>
     <a href="#">1. Kamera Sızma</a>
@@ -118,11 +129,7 @@
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
-      if (sidebar.style.width === "250px") {
-        sidebar.style.width = "0";
-      } else {
-        sidebar.style.width = "250px";
-      }
+      sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
     }
   </script>
 
