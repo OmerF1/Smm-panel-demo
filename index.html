@@ -2,25 +2,29 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<title>OmerF1 Panel - SMM Sipariş</title>
+<title>OmerF1 Panel - Gelişmiş SMM Sipariş</title>
 <style>
   body {
-    background: linear-gradient(135deg, #001f3f, #003366);
-    color: white;
-    font-family: sans-serif;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px;
   }
   h1, h2 {
     text-align: center;
+    text-shadow: 0 0 5px #004466;
   }
   .price-list {
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto 30px;
     border-collapse: collapse;
     width: 100%;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    overflow: hidden;
   }
   .price-list th, .price-list td {
-    border: 1px solid #00bfa5;
+    border: 1px solid #00eaff;
     padding: 12px;
     text-align: center;
   }
@@ -28,43 +32,56 @@
     background-color: #004466;
   }
   form {
-    max-width: 400px;
+    max-width: 450px;
     margin: 0 auto;
-    background: rgba(255,255,255,0.1);
-    padding: 20px;
-    border-radius: 10px;
+    background: rgba(255,255,255,0.15);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #00eaff;
   }
-  input, select {
+  select, input {
     width: 100%;
-    padding: 10px;
-    margin: 8px 0 16px 0;
-    border-radius: 5px;
-    border: none;
-    font-size: 1em;
-  }
-  button {
-    width: 100%;
-    background: #00bfa5;
+    border-radius: 8px;
     border: none;
     padding: 12px;
-    color: white;
-    font-size: 1.1em;
-    border-radius: 5px;
+    font-size: 1em;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    transition: box-shadow 0.3s ease;
+    color: #003366;
+    margin-bottom: 18px;
+  }
+  select:focus, input:focus {
+    outline: none;
+    box-shadow: 0 0 12px #00eaff;
+  }
+  button {
+    background: linear-gradient(45deg, #00eaff, #005f99);
+    border: none;
+    padding: 15px;
+    font-weight: bold;
+    border-radius: 12px;
     cursor: pointer;
+    color: #fff;
+    font-size: 1.1em;
+    transition: background 0.3s ease;
   }
   button:hover {
-    background: #008e76;
+    background: linear-gradient(45deg, #0072ff, #00c6ff);
+    box-shadow: 0 0 18px #00eaff;
   }
   #ordersList {
-    max-width: 600px;
-    margin: 30px auto 0;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 15px;
+    max-width: 700px;
+    margin: 35px auto 0;
+    background: rgba(255,255,255,0.15);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 15px #00eaff;
   }
   .order-item {
-    border-bottom: 1px solid #00bfa5;
-    padding: 10px 0;
+    border-bottom: 1px solid #00eaff;
+    padding: 12px 0;
+    color: #003366;
+    font-weight: 600;
   }
 </style>
 </head>
@@ -81,10 +98,8 @@
       <th>Açıklama</th>
     </tr>
   </thead>
-  <tbody>
-    <tr><td>Instagram Takipçi</td><td>100</td><td>1000 takipçi paketi</td></tr>
-    <tr><td>Instagram Beğeni</td><td>50</td><td>500 beğeni paketi</td></tr>
-    <tr><td>Instagram Yorum</td><td>70</td><td>200 yorum paketi</td></tr>
+  <tbody id="priceTableBody">
+    <!-- Buraya JS ile otomatik gelecek -->
   </tbody>
 </table>
 
@@ -93,9 +108,6 @@
   <label for="service">Hizmet Seç:</label>
   <select id="service" required>
     <option value="">Seçiniz</option>
-    <option value="Instagram Takipçi">Instagram Takipçi</option>
-    <option value="Instagram Beğeni">Instagram Beğeni</option>
-    <option value="Instagram Yorum">Instagram Yorum</option>
   </select>
 
   <label for="quantity">Miktar (adet):</label>
@@ -113,56 +125,80 @@
 </div>
 
 <script>
+  // Hizmetler ve fiyatlar
+  const services = [
+    { name: "Instagram Takipçi", price: 100, desc: "1000 takipçi paketi" },
+    { name: "Instagram Beğeni", price: 50, desc: "500 beğeni paketi" },
+    { name: "Instagram Yorum", price: 70, desc: "200 yorum paketi" },
+    { name: "TikTok Takipçi", price: 120, desc: "1000 TikTok takipçi" },
+    { name: "YouTube Abone", price: 150, desc: "500 YouTube abonesi" },
+    { name: "Twitter Takipçi", price: 90, desc: "500 Twitter takipçi" },
+    { name: "Facebook Beğeni", price: 40, desc: "300 Facebook beğeni" },
+    { name: "Spotify Takipçi", price: 80, desc: "Spotify takipçi paketi" },
+    // İstersen buraya yüzlerce daha ekleyebilirsin!
+  ];
+
+  // Tablo ve select elementlerini seç
+  const priceTableBody = document.getElementById('priceTableBody');
+  const serviceSelect = document.getElementById('service');
+
+  // Tabloyu doldur
+  services.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.name}</td><td>${s.price}</td><td>${s.desc}</td>`;
+    priceTableBody.appendChild(tr);
+
+    // Select eklentisi
+    const option = document.createElement('option');
+    option.value = s.name;
+    option.textContent = s.name;
+    serviceSelect.appendChild(option);
+  });
+
   const orderForm = document.getElementById('orderForm');
   const ordersList = document.getElementById('ordersList');
   const ordersContainer = document.getElementById('ordersContainer');
 
-  // Siparişleri getir ve göster
+  // Siparişleri gösterme fonksiyonu
   function showOrders() {
     let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    if(orders.length === 0) {
+    if (orders.length === 0) {
       ordersList.style.display = 'none';
       return;
     }
     ordersList.style.display = 'block';
     ordersContainer.innerHTML = '';
-    orders.forEach((order, index) => {
-      let div = document.createElement('div');
+    orders.forEach((order, i) => {
+      const div = document.createElement('div');
       div.classList.add('order-item');
-      div.innerHTML = `
-        <strong>#${index + 1}</strong><br/>
-        Hizmet: ${order.service}<br/>
-        Miktar: ${order.quantity}<br/>
-        Hesap: ${order.account}
-      `;
+      div.textContent = `#${i + 1} - Hizmet: ${order.service} | Miktar: ${order.quantity} | Hesap: ${order.account}`;
       ordersContainer.appendChild(div);
     });
   }
 
-  // Form gönderildiğinde
-  orderForm.addEventListener('submit', function(e) {
+  // Form gönderim işlemi
+  orderForm.addEventListener('submit', e => {
     e.preventDefault();
-    const service = document.getElementById('service').value;
+    const service = serviceSelect.value;
     const quantity = document.getElementById('quantity').value;
     const account = document.getElementById('account').value.trim();
 
-    if(!service || quantity <= 0 || !account) {
+    if (!service || quantity <= 0 || !account) {
       alert('Lütfen tüm alanları doğru doldurun!');
       return;
     }
 
-    // Yeni siparişi kaydet
+    // Siparişi kaydet
     let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push({service, quantity, account});
+    orders.push({ service, quantity, account });
     localStorage.setItem('orders', JSON.stringify(orders));
 
     alert('Siparişiniz alındı!');
-
     orderForm.reset();
     showOrders();
   });
 
-  // Sayfa yüklendiğinde siparişleri göster
+  // Sayfa yüklenince siparişleri göster
   showOrders();
 </script>
 
