@@ -1,52 +1,140 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>OmerF1 Panel</title>
+  <meta charset="UTF-8" />
+  <title>OmerF1 Panel - Kayıt & Giriş</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #001f3f, #003366); /* Lacivert tonlar */
+      background: linear-gradient(135deg, #001f3f, #003366);
       color: white;
       font-family: sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      text-align: center;
+      margin: 0;
       flex-direction: column;
+      text-align: center;
+      padding: 20px;
     }
     h1 {
-      font-size: 3em;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
-    p {
-      font-size: 1.5em;
-      margin-bottom: 30px;
+    form {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      width: 280px;
     }
-    .buttons a {
-      display: inline-block;
-      margin: 10px;
-      padding: 14px 28px;
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 16px 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    button {
       background-color: #00bfa5;
+      border: none;
+      padding: 12px 0;
+      width: 100%;
       color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 1.2em;
-      transition: background-color 0.3s;
+      font-size: 1.1em;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .buttons a:hover {
+    button:hover {
       background-color: #008e76;
+    }
+    #welcome {
+      font-size: 1.4em;
+      margin-top: 30px;
+    }
+    #logoutBtn {
+      margin-top: 20px;
+      background-color: #f44336;
     }
   </style>
 </head>
 <body>
   <h1>OmerF1 Panel</h1>
-  <p>Yakında yayında! Takipte kal 🕓</p>
-  <div class="buttons">
-    <a href="https://instagram.com/" target="_blank">Instagram</a>
-    <a href="https://wa.me/" target="_blank">WhatsApp</a>
+
+  <div id="forms">
+
+    <form id="registerForm">
+      <h2>Kayıt Ol</h2>
+      <input type="text" id="regUsername" placeholder="Kullanıcı Adı" required />
+      <input type="password" id="regPassword" placeholder="Şifre" required />
+      <button type="submit">Kayıt Ol</button>
+    </form>
+
+    <form id="loginForm">
+      <h2>Giriş Yap</h2>
+      <input type="text" id="loginUsername" placeholder="Kullanıcı Adı" required />
+      <input type="password" id="loginPassword" placeholder="Şifre" required />
+      <button type="submit">Giriş Yap</button>
+    </form>
+
   </div>
+
+  <div id="welcome" style="display:none;">
+    <p>Hoşgeldin, <span id="userDisplay"></span>!</p>
+    <button id="logoutBtn">Çıkış Yap</button>
+  </div>
+
+  <script>
+    const registerForm = document.getElementById('registerForm');
+    const loginForm = document.getElementById('loginForm');
+    const formsDiv = document.getElementById('forms');
+    const welcomeDiv = document.getElementById('welcome');
+    const userDisplay = document.getElementById('userDisplay');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Kayıt ol
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('regUsername').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+
+      if(localStorage.getItem('user_' + username)) {
+        alert('Bu kullanıcı adı zaten kayıtlı!');
+        return;
+      }
+
+      localStorage.setItem('user_' + username, password);
+      alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
+      registerForm.reset();
+    });
+
+    // Giriş yap
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      const storedPassword = localStorage.getItem('user_' + username);
+      if(storedPassword && storedPassword === password) {
+        showWelcome(username);
+      } else {
+        alert('Kullanıcı adı veya şifre yanlış!');
+      }
+      loginForm.reset();
+    });
+
+    // Hoşgeldin göster
+    function showWelcome(username) {
+      formsDiv.style.display = 'none';
+      welcomeDiv.style.display = 'block';
+      userDisplay.textContent = username;
+    }
+
+    // Çıkış yap
+    logoutBtn.addEventListener('click', function() {
+      formsDiv.style.display = 'block';
+      welcomeDiv.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
