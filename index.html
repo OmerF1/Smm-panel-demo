@@ -1,140 +1,170 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>OmerF1 Panel - Kayıt & Giriş</title>
-  <style>
-    body {
-      background: linear-gradient(135deg, #001f3f, #003366);
-      color: white;
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      flex-direction: column;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 20px;
-    }
-    form {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      width: 280px;
-    }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0 16px 0;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-    }
-    button {
-      background-color: #00bfa5;
-      border: none;
-      padding: 12px 0;
-      width: 100%;
-      color: white;
-      font-size: 1.1em;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #008e76;
-    }
-    #welcome {
-      font-size: 1.4em;
-      margin-top: 30px;
-    }
-    #logoutBtn {
-      margin-top: 20px;
-      background-color: #f44336;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>OmerF1 Panel - SMM Sipariş</title>
+<style>
+  body {
+    background: linear-gradient(135deg, #001f3f, #003366);
+    color: white;
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  h1, h2 {
+    text-align: center;
+  }
+  .price-list {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .price-list th, .price-list td {
+    border: 1px solid #00bfa5;
+    padding: 12px;
+    text-align: center;
+  }
+  .price-list th {
+    background-color: #004466;
+  }
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 10px;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 16px 0;
+    border-radius: 5px;
+    border: none;
+    font-size: 1em;
+  }
+  button {
+    width: 100%;
+    background: #00bfa5;
+    border: none;
+    padding: 12px;
+    color: white;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #008e76;
+  }
+  #ordersList {
+    max-width: 600px;
+    margin: 30px auto 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 15px;
+  }
+  .order-item {
+    border-bottom: 1px solid #00bfa5;
+    padding: 10px 0;
+  }
+</style>
 </head>
 <body>
-  <h1>OmerF1 Panel</h1>
 
-  <div id="forms">
+<h1>OmerF1 Panel</h1>
 
-    <form id="registerForm">
-      <h2>Kayıt Ol</h2>
-      <input type="text" id="regUsername" placeholder="Kullanıcı Adı" required />
-      <input type="password" id="regPassword" placeholder="Şifre" required />
-      <button type="submit">Kayıt Ol</button>
-    </form>
+<h2>Fiyat Listesi</h2>
+<table class="price-list">
+  <thead>
+    <tr>
+      <th>Hizmet</th>
+      <th>Fiyat (TL)</th>
+      <th>Açıklama</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Instagram Takipçi</td><td>100</td><td>1000 takipçi paketi</td></tr>
+    <tr><td>Instagram Beğeni</td><td>50</td><td>500 beğeni paketi</td></tr>
+    <tr><td>Instagram Yorum</td><td>70</td><td>200 yorum paketi</td></tr>
+  </tbody>
+</table>
 
-    <form id="loginForm">
-      <h2>Giriş Yap</h2>
-      <input type="text" id="loginUsername" placeholder="Kullanıcı Adı" required />
-      <input type="password" id="loginPassword" placeholder="Şifre" required />
-      <button type="submit">Giriş Yap</button>
-    </form>
+<h2>Sipariş Formu</h2>
+<form id="orderForm">
+  <label for="service">Hizmet Seç:</label>
+  <select id="service" required>
+    <option value="">Seçiniz</option>
+    <option value="Instagram Takipçi">Instagram Takipçi</option>
+    <option value="Instagram Beğeni">Instagram Beğeni</option>
+    <option value="Instagram Yorum">Instagram Yorum</option>
+  </select>
 
-  </div>
+  <label for="quantity">Miktar (adet):</label>
+  <input type="number" id="quantity" min="1" required placeholder="Adet giriniz" />
 
-  <div id="welcome" style="display:none;">
-    <p>Hoşgeldin, <span id="userDisplay"></span>!</p>
-    <button id="logoutBtn">Çıkış Yap</button>
-  </div>
+  <label for="account">Hesap Kullanıcı Adı:</label>
+  <input type="text" id="account" placeholder="Instagram kullanıcı adı" required />
 
-  <script>
-    const registerForm = document.getElementById('registerForm');
-    const loginForm = document.getElementById('loginForm');
-    const formsDiv = document.getElementById('forms');
-    const welcomeDiv = document.getElementById('welcome');
-    const userDisplay = document.getElementById('userDisplay');
-    const logoutBtn = document.getElementById('logoutBtn');
+  <button type="submit">Siparişi Gönder</button>
+</form>
 
-    // Kayıt ol
-    registerForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const username = document.getElementById('regUsername').value.trim();
-      const password = document.getElementById('regPassword').value.trim();
+<div id="ordersList" style="display:none;">
+  <h2>Gelen Siparişler</h2>
+  <div id="ordersContainer"></div>
+</div>
 
-      if(localStorage.getItem('user_' + username)) {
-        alert('Bu kullanıcı adı zaten kayıtlı!');
-        return;
-      }
+<script>
+  const orderForm = document.getElementById('orderForm');
+  const ordersList = document.getElementById('ordersList');
+  const ordersContainer = document.getElementById('ordersContainer');
 
-      localStorage.setItem('user_' + username, password);
-      alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
-      registerForm.reset();
+  // Siparişleri getir ve göster
+  function showOrders() {
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    if(orders.length === 0) {
+      ordersList.style.display = 'none';
+      return;
+    }
+    ordersList.style.display = 'block';
+    ordersContainer.innerHTML = '';
+    orders.forEach((order, index) => {
+      let div = document.createElement('div');
+      div.classList.add('order-item');
+      div.innerHTML = `
+        <strong>#${index + 1}</strong><br/>
+        Hizmet: ${order.service}<br/>
+        Miktar: ${order.quantity}<br/>
+        Hesap: ${order.account}
+      `;
+      ordersContainer.appendChild(div);
     });
+  }
 
-    // Giriş yap
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const username = document.getElementById('loginUsername').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
+  // Form gönderildiğinde
+  orderForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const service = document.getElementById('service').value;
+    const quantity = document.getElementById('quantity').value;
+    const account = document.getElementById('account').value.trim();
 
-      const storedPassword = localStorage.getItem('user_' + username);
-      if(storedPassword && storedPassword === password) {
-        showWelcome(username);
-      } else {
-        alert('Kullanıcı adı veya şifre yanlış!');
-      }
-      loginForm.reset();
-    });
-
-    // Hoşgeldin göster
-    function showWelcome(username) {
-      formsDiv.style.display = 'none';
-      welcomeDiv.style.display = 'block';
-      userDisplay.textContent = username;
+    if(!service || quantity <= 0 || !account) {
+      alert('Lütfen tüm alanları doğru doldurun!');
+      return;
     }
 
-    // Çıkış yap
-    logoutBtn.addEventListener('click', function() {
-      formsDiv.style.display = 'block';
-      welcomeDiv.style.display = 'none';
-    });
-  </script>
+    // Yeni siparişi kaydet
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    orders.push({service, quantity, account});
+    localStorage.setItem('orders', JSON.stringify(orders));
+
+    alert('Siparişiniz alındı!');
+
+    orderForm.reset();
+    showOrders();
+  });
+
+  // Sayfa yüklendiğinde siparişleri göster
+  showOrders();
+</script>
+
 </body>
 </html>
